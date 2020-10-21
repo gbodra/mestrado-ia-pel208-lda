@@ -14,7 +14,11 @@ def means(x, y):
         x4_mean = sum(x[y == c, 3]) / len(x[y == c, 3])
         means_vector.append([x1_mean, x2_mean, x3_mean, x4_mean])
 
-    return means_vector
+    x_zipped = [item for sublist in x for item in sublist]
+    overall_mean = []
+    
+    overall_mean.append()
+    return means_vector, overall_mean
 
 
 def matrix_empty(rows, cols):
@@ -162,6 +166,25 @@ def scatter_within(x, y, mean):
     return sw
 
 
+def scatter_between(x, y, means_vector, overall_mean):
+    sb = matrix_empty(4, 4)
+    overall_mean = np.mean(x, axis=0)
+
+    for i, mean_vec in enumerate(means_vector):
+        n = len(x[y == i, :])
+        mean_vec = vector_to_matrix(mean_vec)
+        # mean_vec = mean_vec.reshape(4, 1)  # make column vector
+        # overall_mean = vector_to_matrix([overall_mean])
+        overall_mean = overall_mean.reshape(4, 1)  # make column vector
+        mean_vec_minus_overall_mean = matrix_subtraction(mean_vec, overall_mean)
+        mean_vec_minus_overall_mean_t = matrix_transpose(mean_vec_minus_overall_mean)
+        multiply = matrix_multiply(mean_vec_minus_overall_mean, mean_vec_minus_overall_mean_t)
+
+        sb += n * (mean_vec - overall_mean).dot((mean_vec - overall_mean).T)
+
+    print('between-class Scatter Matrix:\n', sb)
+
+
 def plot_data():
     logging.debug("*******PLOT*******")
     plt.scatter(iris_data[:, 0], iris_data[:, 1], iris_data[:, 2], iris_data[:, 3])
@@ -173,7 +196,8 @@ iris_dataset = datasets.load_iris()
 iris_data = iris_dataset.data
 iris_target = iris_dataset.target
 
-means_per_class = means(iris_data, iris_target)
+means_per_class, grand_mean = means(iris_data, iris_target)
 s_w = scatter_within(iris_data, iris_target, means_per_class)
+scatter_between(iris_data, iris_target, means_per_class, grand_mean)
 
 plot_data()
