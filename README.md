@@ -7,3 +7,5 @@
 ## Implementação
 
 Classificação do LDA com 2 componentes
+
+![alt text](https://raw.githubusercontent.com/gbodra/mestrado-ia-pel208-lda/main/images/Figure_1.png "lda")
