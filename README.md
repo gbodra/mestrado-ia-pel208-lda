@@ -3,3 +3,7 @@
 1. Implementar o LDA e o use para a classificação dos dados de Iris de Fisher.
 
 2. Implementar o PCA+LDA e o use para a classificação dos dados de Iris de Fisher
+
+## Implementação
+
+Classificação do LDA com 2 componentes

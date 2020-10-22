@@ -91,19 +91,18 @@ def matrix_transpose(m):
 
 def matrix_addition(A, B):
     """
-    Adds two matrices and returns the sum
-        :param A: The first matrix
-        :param B: The second matrix
+    Soma duas matrizes
+        :param A: Matriz 1
+        :param B: Matriz 2
 
-        :return: Matrix sum
+        :return: retorna a soma das matrizes
     """
-    # Section 1: Ensure dimensions are valid for matrix addition
     rowsA = len(A)
     colsA = len(A[0])
     rowsB = len(B)
     colsB = len(B[0])
     if rowsA != rowsB or colsA != colsB:
-        raise ArithmeticError('Matrices are NOT the same size.')
+        raise ArithmeticError('A matrizes não tem o mesmo tamanho')
 
     # Section 2: Create a new matrix for the matrix sum
     C = matrix_empty(rowsA, colsB)
@@ -234,15 +233,9 @@ def sw_sb(sw, sb):
 
 
 def sort_eig(eig_vals, eig_vecs):
-    # STEP 4 - Selecting linear discriminants for the new feature subspace
-
-    # Make a list of (eigenvalue, eigenvector) tuples
     eig_pairs = [(np.abs(eig_vals[i]), eig_vecs[:, i]) for i in range(len(eig_vals))]
 
-    # Sort the (eigenvalue, eigenvector) tuples from high to low
     eig_pairs = sorted(eig_pairs, key=lambda k: k[0], reverse=True)
-
-    # Visually confirm that the list is correctly sorted by decreasing eigenvalues
 
     print('Eigenvalues in decreasing order:\n')
     for i in eig_pairs:
@@ -253,11 +246,10 @@ def sort_eig(eig_vals, eig_vecs):
     for i, j in enumerate(eig_pairs):
         print('eigenvalue {0:}: {1:.2%}'.format(i + 1, (j[0] / eigv_sum).real))
 
-    # STEP 4.2. Choosing k eigenvectors with the largest eigenvalues
+
     W = np.hstack((eig_pairs[0][1].reshape(4, 1), eig_pairs[1][1].reshape(4, 1)))
     print('Matrix W:\n', W.real)
 
-    # STEP 5 Transforming the samples onto the new subspace
     X_lda = iris_data.dot(W)
     assert X_lda.shape == (150, 2), "The matrix is not 150x2 dimensional."
 
@@ -276,12 +268,12 @@ def plot_step_lda():
                     label=label_dict[label]
                     )
 
-    plt.xlabel('LD1')
-    plt.ylabel('LD2')
+    plt.xlabel('Component 1')
+    plt.ylabel('Component 2')
 
     leg = plt.legend(loc='upper right', fancybox=True)
     leg.get_frame().set_alpha(0.5)
-    plt.title('LDA: Iris projection onto the first 2 linear discriminants')
+    plt.title('LDA')
 
     # hide axis ticks
     plt.tick_params(axis="both", which="both", bottom="off", top="off",
